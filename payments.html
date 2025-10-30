@@ -31,8 +31,8 @@
 <script>
 (async function(){
   try {
-    const r = await fetch('donations.json'); // your JSON file
-    if(!r.ok) throw new Error('donations.json not found');
+    const r = await fetch('payments.json'); // your JSON file
+    if(!r.ok) throw new Error('payments.json not found');
     const donations = await r.json();
 
     let html = '';
@@ -105,7 +105,7 @@
     document.getElementById('paymentsArea').innerHTML = html;
 
   } catch(e) {
-    document.getElementById('paymentsArea').innerHTML = '<div class="muted">No donation records found. Please add <code>donations.json</code> to the repo.</div>';
+    document.getElementById('paymentsArea').innerHTML = '<div class="muted">No donation records found. Please add <code>payments.json</code> to the repo.</div>';
     console.error(e);
   }
 })();
