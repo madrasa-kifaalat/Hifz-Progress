@@ -20,19 +20,45 @@
 
   <script src="assets/app.js"></script>
   <script>
-    (async function(){
-      const data = await window.loadData();
-      // try to fetch payments.json (optional)
-      try {
-        const r = await fetch('payments.json');
-        if(!r.ok) throw new Error('no payments.json');
-        const payments = await r.json();
-        const tbl = `<div class="table-responsive"><table class="table"><thead><tr><th>Date</th><th>Student</th><th>Sponsor</th><th>Amount</th><th>Note</th></tr></thead><tbody>${payments.map(p=>`<tr><td>${escapeHTML(p.date)}</td><td>${escapeHTML(p.student)}</td><td>${escapeHTML(p.sponsor)}</td><td>${escapeHTML(String(p.amount))}</td><td>${escapeHTML(p.note||'')}</td></tr>`).join('')}</tbody></table></div>`;
-        document.getElementById('paymentsArea').innerHTML = tbl;
-      } catch(e){
-        document.getElementById('paymentsArea').innerHTML = '<div class="muted">No payment records found. To use this page, add <code>payments.json</code> to the repo with fields: <code>date,student,sponsor,amount,note</code>.</div>';
-      }
-    })();
+  (async function(){
+    const data = await window.loadData(); // keep this if needed elsewhere
+
+    try {
+      // Fetch your donations JSON (the new structure)
+      const r = await fetch('donations.json'); // make sure your JSON file is named donations.json
+      if(!r.ok) throw new Error('no donations.json');
+      const donations = await r.json();
+
+      // Display Monthly Donations
+      let tbl = `<h4>Monthly Donations</h4>
+                 <div class="table-responsive">
+                 <table class="table">
+                 <thead><tr><th>Sponsor</th><th>Amount</th></tr></thead>
+                 <tbody>
+                 ${donations.monthly_donations.map(d=>`<tr><td>${d.sponsor}</td><td>${d.amount}</td></tr>`).join('')}
+                 </tbody></table></div>`;
+
+      // Display Bank Info
+      tbl += `<h4>Bank Details</h4>
+              <ul>
+                <li>Bank: ${donations.bank_details.bank_name}</li>
+                <li>Account No: ${donations.bank_details.account_no}</li>
+                <li>IFSC: ${donations.bank_details.ifsc_code}</li>
+                <li>UPI: ${donations.bank_details.upi_id}</li>
+                <li>Account Holder: ${donations.bank_details.account_holder}</li>
+                <li>Email: ${donations.bank_details.email}</li>
+              </ul>`;
+
+      // Display Notes
+      tbl += `<h4>Notes</h4>
+              <ul>${donations.notes.map(n=>`<li>${n}</li>`).join('')}</ul>`;
+
+      document.getElementById('paymentsArea').innerHTML = tbl;
+
+    } catch(e){
+      document.getElementById('paymentsArea').innerHTML = '<div class="muted">No donation records found. Please add <code>donations.json</code> to the repo.</div>';
+    }
+  })();
   </script>
 </body>
 </html>
