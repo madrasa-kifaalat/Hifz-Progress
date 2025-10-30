@@ -31,7 +31,7 @@
   <main class="container mt-4">
     <div class="card p-4 mb-4">
       <h2>📊 Hifz Progress Dashboard</h2>
-      <p class="muted">A visual overview of student progress and sponsor contribution.</p>
+      <p class="muted">A visual overview of student progress.</p>
 
       <div class="row g-4 mt-2">
         <div class="col-md-4 text-center">
@@ -55,21 +55,22 @@
       </div>
     </div>
 
-    <!-- Chart 1: Overall Progress -->
+    <!-- Chart: Overall Progress -->
     <div class="card p-4 mb-4">
       <h3>📈 Overall Student Progress Distribution</h3>
       <canvas id="chartProgress" height="120"></canvas>
     </div>
 
-    <!-- Chart 2: Average Progress per Sponsor -->
-    <div class="card p-4 mb-4">
-      <h3>🤝 Average Progress by Sponsor</h3>
-      <canvas id="chartSponsorAvg" height="200"></canvas>
-    </div>
-
+    <!-- Message moved right after the chart -->
     <div class="card p-4 mb-4">
       <h3>🕋 Message</h3>
       <p>Madrasa Kifālat is a humble initiative to empower education through compassion, collaboration, and sincerity — purely for the sake of Aakhirah.</p>
+    </div>
+
+    <!-- Optional quick links -->
+    <div class="card p-4 mb-4">
+      <a class="btn btn-outline-primary me-2" href="students.html">View Students</a>
+      <a class="btn btn-outline-secondary" href="sponsors.html">View Sponsors</a>
     </div>
   </main>
 
@@ -77,7 +78,7 @@
   <script>
   (async function(){
     const data = await window.loadData();
-    const students = data.students;
+    const students = data.students || [];
 
     // Stats
     const total = students.length;
@@ -87,7 +88,7 @@
     document.getElementById('statAvg').textContent = avg + '%';
     document.getElementById('statSponsors').textContent = sponsors;
 
-    // --- Chart 1: Overall Progress Distribution ---
+    // Chart: Progress distribution by ranges (named)
     const ranges = ['0–10%', '11–20%', '21–30%', '31–40%', '41–50%', '51–60%', '61–70%', '71–80%', '81–90%', '91–100%'];
     const counts = Array(ranges.length).fill(0);
     students.forEach(s=>{
@@ -96,17 +97,19 @@
       counts[idx]++;
     });
 
-    new Chart(document.getElementById('chartProgress'), {
+    // Create chart
+    const ctx = document.getElementById('chartProgress').getContext('2d');
+    new Chart(ctx, {
       type: 'bar',
       data: {
         labels: ranges,
         datasets: [{
           label: 'Number of Students',
           data: counts,
-          backgroundColor: 'rgba(11, 107, 58, 0.6)',
+          backgroundColor: 'rgba(11, 107, 58, 0.7)',
           borderColor: 'rgba(11, 107, 58, 1)',
           borderWidth: 1,
-          borderRadius: 4
+          borderRadius: 6
         }]
       },
       options: {
@@ -118,45 +121,6 @@
         scales: {
           x: { title: { display: true, text: 'Progress Range' } },
           y: { beginAtZero: true, title: { display: true, text: 'Number of Students' }, ticks: { stepSize: 1 } }
-        }
-      }
-    });
-
-    // --- Chart 2: Average Progress by Sponsor ---
-    const sponsorMap = {};
-    students.forEach(s=>{
-      if(!s.sponsor) return;
-      if(!sponsorMap[s.sponsor]) sponsorMap[s.sponsor] = { total:0, count:0 };
-      sponsorMap[s.sponsor].total += (s.progress_pct||0);
-      sponsorMap[s.sponsor].count++;
-    });
-
-    const sponsorNames = Object.keys(sponsorMap);
-    const sponsorAverages = sponsorNames.map(k => Math.round(sponsorMap[k].total / sponsorMap[k].count));
-
-    new Chart(document.getElementById('chartSponsorAvg'), {
-      type: 'bar',
-      data: {
-        labels: sponsorNames,
-        datasets: [{
-          label: 'Avg Progress (%)',
-          data: sponsorAverages,
-          backgroundColor: 'rgba(0, 150, 136, 0.7)',
-          borderColor: 'rgba(0, 150, 136, 1)',
-          borderWidth: 1,
-          borderRadius: 4
-        }]
-      },
-      options: {
-        responsive: true,
-        indexAxis: 'y',
-        plugins: {
-          legend: { display: false },
-          title: { display: true, text: 'Average Hifz Progress per Sponsor', font: { size: 14 } }
-        },
-        scales: {
-          x: { beginAtZero: true, title: { display: true, text: 'Average Progress (%)' } },
-          y: { title: { display: true, text: 'Sponsor' } }
         }
       }
     });
