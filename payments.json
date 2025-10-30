@@ -1,40 +1,31 @@
-# 🕌 Madrasa Kifālat – Donations & Bank Details
-
-## 🌟 Purpose
-Madrasa Kifālat is a charitable initiative to support students and madrasas in need. All donations are collected **purely for the sake of Aakhirah**. There is **no personal promotion** or worldly gain involved.
-
----
-
-## 💰 Monthly Donation Details
-
-| Sponsor       | Monthly Donation Amount |
-|---------------|-----------------------|
-| Arif          | ₹1,000/-              |
-| Zulfi         | ₹1,000/-              |
-| Arshad        | ₹2,000/-              |
-| Sadiq         | ₹4,000/-              |
-| Ghouse        | ₹2,000/-              |
-| Waseem        | ₹2,000/-              |
-| Zebran        | ₹1,000/-              |
-| Adil          | ₹1,000/-              |
-| Mazeed Bhai   | ₹3,000/-              |
-
-
-## 🏦 Bank Account Details
-
-**Bank:** Kotak Mahindra Bank  
-**Account No:** 7348178002  
-**IFSC Code:** KKBK0000811  
-**UPI ID:** 9380015325@kotak811  
-**Account Holder Name:** Mohammad Ghouse  
-**Email:** wakalatboard@gmail.com  
-
-
-## 📝 Important Notes
-
-- Amount should be sent to the bank account **on or before the 30th of every month**.  
-- **Always use the UPI code**, not a mobile number, for transactions.  
-- **No refunds** will be issued once the amount is credited, unless there is a major cause.  
-- This account **cannot be used for personal transactions, lending, or spending on anything other than madrasa expenses**.  
-- The **account statement will be shared and discussed every month** with all sponsors in the WhatsApp group.  
-- **Any interest earned** on the account will be used solely for charity.  
+{
+  "title": "Madrasa Kifālat – Donations & Bank Details",
+  "purpose": "Madrasa Kifālat is a charitable initiative to support students and madrasas in need. All donations are collected purely for the sake of Aakhirah. There is no personal promotion or worldly gain involved.",
+  "monthly_donations": [
+    {"sponsor": "Arif", "amount": 1000},
+    {"sponsor": "Zulfi", "amount": 1000},
+    {"sponsor": "Arshad", "amount": 2000},
+    {"sponsor": "Sadiq", "amount": 4000},
+    {"sponsor": "Ghouse", "amount": 2000},
+    {"sponsor": "Waseem", "amount": 2000},
+    {"sponsor": "Zebran", "amount": 1000},
+    {"sponsor": "Adil", "amount": 1000},
+    {"sponsor": "Mazeed Bhai", "amount": 3000}
+  ],
+  "bank_details": {
+    "bank_name": "Kotak Mahindra Bank",
+    "account_no": "7348178002",
+    "ifsc_code": "KKBK0000811",
+    "upi_id": "9380015325@kotak811",
+    "account_holder": "Mohammad Ghouse",
+    "email": "wakalatboard@gmail.com"
+  },
+  "notes": [
+    "Amount should be sent to the bank account on or before the 30th of every month.",
+    "Always use the UPI code, not a mobile number, for transactions.",
+    "No refunds will be issued once the amount is credited, unless there is a major cause.",
+    "This account cannot be used for personal transactions, lending, or spending on anything other than madrasa expenses.",
+    "The account statement will be shared and discussed every month with all sponsors in the WhatsApp group.",
+    "Any interest earned on the account will be used solely for charity."
+  ]
+}
