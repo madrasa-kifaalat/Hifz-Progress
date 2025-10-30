@@ -1,0 +1,114 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Madrasa Hifz Progress — Gadwal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', system-ui, Arial; background:#f5f7fb; color:#0f1724; padding:24px; }
+    .topbar { background: linear-gradient(90deg,#ffffff,#f0fff4); padding:18px; border-radius:12px; box-shadow: 0 6px 18px rgba(15,23,36,0.04); margin-bottom:20px; }
+    h1 { font-weight:700; color:#0b6b3a; }
+    .card { border: none; border-radius:12px; }
+    .search-bar input { border-radius:999px; padding:12px 18px; border:1px solid #e6eef0; width:100%; }
+    .pbar { height:14px; background:#e9f7ee; border-radius:8px; overflow:hidden; }
+    .pbar .fill { height:100%; background:linear-gradient(90deg,#198754,#2fa66a); width:0%; transition: width 600ms ease; }
+    table.table tbody tr td { vertical-align: middle; }
+    .small-muted { color:#6b7280; font-size:13px; }
+    .stat { background:linear-gradient(90deg,#fff,#f8fff9); padding:14px; border-radius:10px; box-shadow:0 6px 16px rgba(15,23,36,0.04); }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="topbar d-flex justify-content-between align-items-center">
+    <div>
+      <h1>Madrasa Hifz Progress — Gadwal</h1>
+      <div class="small-muted">Simple modern dashboard to track students and sponsors. No login required.</div>
+    </div>
+    <div style="min-width:220px;">
+      <div class="stat text-center">
+        <div style="font-size:12px;color:#6b7280">Total Students</div>
+        <div style="font-weight:700;font-size:22px">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3 align-items-center">
+    <div class="col-md-6 search-bar">
+      <input id="q" placeholder="Search by name, father, place, sponsor..." />
+    </div>
+    <div class="col-md-3">
+      <select id="filterSponsor" class="form-select">
+        <option value="">All Sponsors</option>
+      </select>
+    </div>
+    <div class="col-md-3 text-end">
+      <a class="btn btn-outline-secondary" id="downloadJson" download="students.json">Download JSON</a>
+    </div>
+  </div>
+
+  <div class="card p-3">
+    <div class="table-responsive">
+      <table class="table table-borderless align-middle" id="studentsTable">
+        <thead>
+          <tr class="small-muted"><th>Student</th><th>Father</th><th>Place</th><th>Sponsor</th><th>Para</th><th style="width:220px">Progress</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer class="mt-4 small-muted">Last updated: 2025-10-30 19:08</footer>
+</div>
+
+<script>
+async function load() {
+  const res = await fetch('students.json');
+  const data = await res.json();
+  window._students = data;
+  const sponsors = [...new Set(data.map(s=>s.sponsor).filter(Boolean))].sort();
+  const sel = document.getElementById('filterSponsor');
+  sponsors.forEach(sp=>{ const o = document.createElement('option'); o.value=sp; o.textContent=sp; sel.appendChild(o); });
+  render();
+  animateBars();
+  attachHandlers();
+}
+
+function render(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const sponsorFilter = document.getElementById('filterSponsor').value;
+  let list = window._students.slice();
+  if(sponsorFilter) list = list.filter(x=>x.sponsor===sponsorFilter);
+  if(q) list = list.filter(s=> (s.name+' '+s.father+' '+s.place+' '+s.sponsor).toLowerCase().includes(q) );
+  const tbody = document.querySelector('#studentsTable tbody');
+  tbody.innerHTML = list.map(s => `
+    <tr>
+      <td><strong>${'{'}s.name{'}'}</strong></td>
+      <td>${'{'}s.father{'}'}</td>
+      <td>${'{'}s.place{'}'}</td>
+      <td>${'{'}s.sponsor{'}'}</td>
+      <td>${'{'}s.para{'}' || 0}</td>
+      <td>
+        <div class="pbar"><div class="fill" style="width:${'{'}s.progress_pct{'}'}%"></div></div>
+        <div class="small-muted mt-1">${'{'}s.progress_pct{'}'}% complete</div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function animateBars(){
+  setTimeout(()=>{ document.querySelectorAll('.pbar .fill').forEach((f,idx)=>{ const w = f.style.width; f.style.width='0%'; setTimeout(()=> f.style.width = w, 100 + idx*30); }); }, 200);
+}
+
+function attachHandlers(){
+  document.getElementById('q').addEventListener('input', render);
+  document.getElementById('filterSponsor').addEventListener('change', render);
+  document.getElementById('downloadJson').addEventListener('click', ()=>{ fetch('students.json').then(r=>r.blob()).then(b=>{ const url=URL.createObjectURL(b); document.getElementById('downloadJson').href=url; }) });
+}
+
+window.addEventListener('DOMContentLoaded', load);
+</script>
+</body>
+</html>
