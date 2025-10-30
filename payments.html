@@ -35,6 +35,14 @@
     const r = await fetch('payments.json');
     if(!r.ok) throw new Error('payments.json not found');
     const donations = await r.json();
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">🌟 Purpose</h5>
+      </div>
+      <div class="card-body">
+        <p>Madrasa Kifālat is a charitable initiative to support students and madrasas in need. All donations are collected <strong>purely for the sake of Aakhirah</strong>. There is <strong>no personal promotion</strong> or worldly gain involved.</p>
+      </div>
+    </div>
 
     // Build Monthly Donations Table
     let html = `
