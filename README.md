@@ -1,7 +1,4 @@
-# Hifz-Progress
-Student progress dashboard — Hifz course tracking and sponsor overview.
-
-# Madrasa Kifālat
+# Madrasa Kifālat 
 
 🌿 **Empowering education through care — purely for the sake of Aakhirah.**
 
