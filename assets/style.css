@@ -17,3 +17,14 @@ body{background:var(--bg);font-family:Poppins,system-ui,Arial;color:#0f1724;padd
 .pbar .fill{height:100%;background:linear-gradient(90deg,#198754,#2fa66a)}
 .sponsor-card{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #f1f5f9}
 .stat-small{font-weight:700;color:var(--accent)}
+canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+.nav-links a.active {
+  font-weight: 700;
+  color: var(--accent);
+}
+.brand img {
+  filter: hue-rotate(120deg);
+}
