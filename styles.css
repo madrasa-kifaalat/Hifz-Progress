@@ -1,0 +1,18 @@
+/* Modern Islamic-inspired theme (green + gold). Use Poppins and Cairo fonts. */
+:root{ --green:#1f6f4a; --gold:#c8a951; --muted:#6b7280; --card:#ffffff; --bg:#fbfbf9; }
+*{box-sizing:border-box} body{font-family:'Poppins',system-ui,Arial; margin:0; background:var(--bg); color:#0f1724; line-height:1.45} .container{max-width:1100px; margin:0 auto; padding:20px}
+.nav{background:linear-gradient(90deg,rgba(31,111,74,0.98), rgba(200,169,81,0.95)); color:#fff; box-shadow:0 3px 12px rgba(15,23,36,0.08)}
+.nav-inner{display:flex; justify-content:space-between; align-items:center; padding:12px 20px}
+.brand{font-family:'Cairo',sans-serif; font-weight:700; color:#fff; text-decoration:none; font-size:20px}
+.nav-links a{color:rgba(255,255,255,0.95); margin-left:18px; text-decoration:none; font-weight:600}
+.hero{padding:40px 0; background:linear-gradient(180deg,rgba(255,255,255,0.04),transparent); border-bottom:1px solid rgba(15,23,36,0.04)}
+.hero-inner{display:flex; flex-direction:column; gap:16px}
+.hero h1{font-family:'Cairo',sans-serif; font-size:32px; color:#052e1f; margin:0}
+.lead{color:var(--muted)} .cards{display:flex; gap:12px; margin-top:8px} .card{background:var(--card); padding:14px; border-radius:10px; box-shadow:0 6px 18px rgba(15,23,36,0.06)}
+.stat{flex:1; text-align:center} .num{font-weight:700; font-size:20px; color:var(--green)} .label{color:var(--muted); font-size:13px} .btn{display:inline-block; background:var(--green); color:#fff; padding:10px 14px; border-radius:8px; text-decoration:none; font-weight:700}
+.main{padding:20px 0} .page{padding:26px 0} .page-head{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px}
+.controls{display:flex; gap:8px; align-items:center} .controls input, .controls select{padding:8px 10px; border-radius:8px; border:1px solid #e6e6e6}
+.table-wrap{background:var(--card); padding:8px; border-radius:8px; box-shadow:0 6px 18px rgba(15,23,36,0.04)} table{width:100%; border-collapse:collapse} th, td{padding:10px 12px; text-align:left; border-bottom:1px solid #f1f1f1} th{background:linear-gradient(90deg,#fbfff9,#fffdf7); font-weight:700}
+.progress-bar{height:18px; background:#f3f7f4; border-radius:8px; overflow:hidden; border:1px solid rgba(15,23,36,0.03)} .progress-fill{height:100%; background:linear-gradient(90deg,var(--green), #2fa66a); width:0%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:12px}
+.girl-row td{background:linear-gradient(90deg, rgba(248,238,242,0.6), transparent)} .footer{padding:24px 0; color:var(--muted); text-align:center; font-size:14px; margin-top:24px}
+@media (max-width:800px){ .cards{flex-direction:column} .nav-links{display:none} .nav-inner{padding:10px} .hero h1{font-size:24px} .page-head{flex-direction:column; align-items:flex-start} }

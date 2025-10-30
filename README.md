@@ -1,0 +1,1 @@
+# Madrasa Hifz Progress\n\nA modern, multi-page static site to track students' Hifz progress and sponsors (kifālat).\n\nGenerated from the Excel file `Gadwal Madarsa Student details.xlsx` on 2025-10-30.\n
