@@ -49,4 +49,16 @@ canvas {
   margin-top: 2rem !important;
   margin-bottom: 2rem !important;
 }
+.btn-lg {
+  font-size: 1.05rem;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+.btn-primary {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+.btn-primary:hover {
+  background-color: #0a5c32;
+}
 
