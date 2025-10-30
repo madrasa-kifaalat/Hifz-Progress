@@ -1,0 +1,19 @@
+:root{
+  --accent:#0b6b3a;
+  --muted:#6b7280;
+  --card-bg:#ffffff;
+  --bg:#f5f7fb;
+}
+body{background:var(--bg);font-family:Poppins,system-ui,Arial;color:#0f1724;padding-bottom:60px}
+.topnav{background:var(--card-bg);box-shadow:0 6px 20px rgba(15,23,36,0.04);padding:12px 0;margin-bottom:16px;border-radius:6px}
+.topnav .brand{font-weight:700;color:var(--accent);text-decoration:none;font-size:18px}
+.topnav .nav-links a{margin-left:12px;color:#334155;text-decoration:none}
+.topnav .nav-links a.active{color:var(--accent);font-weight:700}
+.card{border-radius:10px;box-shadow:0 6px 18px rgba(15,23,36,0.03);background:var(--card-bg)}
+.muted{color:var(--muted)}
+.stat-big{font-size:22px;font-weight:700;color:var(--accent)}
+.mini-row{padding:8px 0;border-bottom:1px dashed #eef3ee}
+.pbar{height:12px;background:#eef7f0;border-radius:8px;overflow:hidden}
+.pbar .fill{height:100%;background:linear-gradient(90deg,#198754,#2fa66a)}
+.sponsor-card{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #f1f5f9}
+.stat-small{font-weight:700;color:var(--accent)}
