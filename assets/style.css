@@ -37,4 +37,16 @@ canvas {
   color: var(--accent);
   font-weight: bold;
 }
+.btn-outline-success {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn-outline-success:hover {
+  background-color: var(--accent);
+  color: #fff;
+}
+.text-center.my-4 {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+}
 
