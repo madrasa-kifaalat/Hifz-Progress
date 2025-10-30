@@ -61,4 +61,18 @@ canvas {
 .btn-primary:hover {
   background-color: #0a5c32;
 }
+.navbar-light .navbar-nav .nav-link.active {
+  font-weight: 600;
+  color: var(--accent) !important;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  color: var(--accent) !important;
+}
+
+.navbar-brand span {
+  font-weight: 600;
+  color: #0b6b3a;
+}
+
 
