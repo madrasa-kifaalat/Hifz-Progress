@@ -9,11 +9,12 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+  <!-- Navbar -->
   <nav class="topnav">
     <div class="container d-flex justify-content-between align-items-center">
       <a class="brand d-flex align-items-center gap-2" href="index.html">
-        <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" width="3" height="3" alt="Home">
-        <span>📖 Madrasa Islamia Arabia Baith-ul-Uloom — Gadwal</span>
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" width="20" height="20" alt="Home">
+        <span>Madrasa Kifālat — Gadwal</span>
       </a>
       <div class="nav-links">
         <a href="index.html" class="active">Home</a>
@@ -26,45 +27,51 @@
     </div>
   </nav>
 
+  <!-- Main -->
   <main class="container mt-4">
     <div class="card p-4 mb-4">
       <h2>📊 Hifz Progress Dashboard</h2>
-      <p class="muted">A quick glance at student progress and sponsorship distribution.</p>
+      <p class="muted">A visual overview of student progress and sponsor contribution.</p>
 
       <div class="row g-4 mt-2">
         <div class="col-md-4 text-center">
           <div class="card p-3">
-            <h5>Total Students</h5>
+            <h6>Total Students</h6>
             <div id="statTotal" class="stat-big">—</div>
           </div>
         </div>
         <div class="col-md-4 text-center">
           <div class="card p-3">
-            <h5>Average Progress</h5>
+            <h6>Average Progress</h6>
             <div id="statAvg" class="stat-big">—</div>
           </div>
         </div>
         <div class="col-md-4 text-center">
           <div class="card p-3">
-            <h5>Total Sponsors</h5>
+            <h6>Total Sponsors</h6>
             <div id="statSponsors" class="stat-big">—</div>
           </div>
         </div>
       </div>
     </div>
-        <div class="card p-4 mb-4">
+
+    <!-- Chart 1: Overall Progress -->
+    <div class="card p-4 mb-4">
+      <h3>📈 Overall Student Progress Distribution</h3>
+      <canvas id="chartProgress" height="120"></canvas>
+    </div>
+
+    <!-- Chart 2: Average Progress per Sponsor -->
+    <div class="card p-4 mb-4">
+      <h3>🤝 Average Progress by Sponsor</h3>
+      <canvas id="chartSponsorAvg" height="200"></canvas>
+    </div>
+
+    <div class="card p-4 mb-4">
       <h3>🕋 Message</h3>
-      <p>Madrasa Kifālat is a humble initiative to empower education through compassion, collaboration and sincerity — purely to secure good deeds for Aakhirah.</p>
+      <p>Madrasa Kifālat is a humble initiative to empower education through compassion, collaboration, and sincerity — purely for the sake of Aakhirah.</p>
     </div>
   </main>
-    <div class="card p-4 mb-4">
-      <h3>💚 Students per Sponsor</h3>
-      <canvas id="chartSponsors" height="100"></canvas>
-    </div>
-    <div class="card p-4 mb-4">
-      <h3>📈 Overall Student Progress</h3>
-      <canvas id="chartProgress" height="100"></canvas>
-    </div>
 
   <script src="assets/app.js?v=2"></script>
   <script>
@@ -76,50 +83,82 @@
     const total = students.length;
     const avg = Math.round(students.reduce((a,b)=>a+(b.progress_pct||0),0)/Math.max(1,total));
     const sponsors = [...new Set(students.map(s=>s.sponsor))].filter(Boolean).length;
-
     document.getElementById('statTotal').textContent = total;
     document.getElementById('statAvg').textContent = avg + '%';
     document.getElementById('statSponsors').textContent = sponsors;
 
-    // Chart 1: Student progress distribution
-    const bins = [0,10,20,30,40,50,60,70,80,90,100];
-    const counts = Array(bins.length).fill(0);
+    // --- Chart 1: Overall Progress Distribution ---
+    const ranges = ['0–10%', '11–20%', '21–30%', '31–40%', '41–50%', '51–60%', '61–70%', '71–80%', '81–90%', '91–100%'];
+    const counts = Array(ranges.length).fill(0);
     students.forEach(s=>{
-      const idx = Math.min(Math.floor((s.progress_pct||0)/10),10);
+      const pct = s.progress_pct || 0;
+      const idx = Math.min(Math.floor(pct / 10), 9);
       counts[idx]++;
     });
 
     new Chart(document.getElementById('chartProgress'), {
       type: 'bar',
       data: {
-        labels: bins.map(b=>b+'%'),
+        labels: ranges,
         datasets: [{
-          label: 'Students',
+          label: 'Number of Students',
           data: counts,
-          borderWidth: 1
+          backgroundColor: 'rgba(11, 107, 58, 0.6)',
+          borderColor: 'rgba(11, 107, 58, 1)',
+          borderWidth: 1,
+          borderRadius: 4
         }]
       },
       options: {
         responsive: true,
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: 'Student Progress by Percentage Range', font: { size: 14 } }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Progress Range' } },
+          y: { beginAtZero: true, title: { display: true, text: 'Number of Students' }, ticks: { stepSize: 1 } }
+        }
       }
     });
 
-    // Chart 2: Students per sponsor
-    const sponsorGroups = students.reduce((a,b)=>{a[b.sponsor]=(a[b.sponsor]||0)+1;return a;}, {});
-    const sLabels = Object.keys(sponsorGroups);
-    const sCounts = Object.values(sponsorGroups);
-    new Chart(document.getElementById('chartSponsors'), {
-      type: 'doughnut',
+    // --- Chart 2: Average Progress by Sponsor ---
+    const sponsorMap = {};
+    students.forEach(s=>{
+      if(!s.sponsor) return;
+      if(!sponsorMap[s.sponsor]) sponsorMap[s.sponsor] = { total:0, count:0 };
+      sponsorMap[s.sponsor].total += (s.progress_pct||0);
+      sponsorMap[s.sponsor].count++;
+    });
+
+    const sponsorNames = Object.keys(sponsorMap);
+    const sponsorAverages = sponsorNames.map(k => Math.round(sponsorMap[k].total / sponsorMap[k].count));
+
+    new Chart(document.getElementById('chartSponsorAvg'), {
+      type: 'bar',
       data: {
-        labels: sLabels,
+        labels: sponsorNames,
         datasets: [{
-          data: sCounts,
-          borderWidth: 1
+          label: 'Avg Progress (%)',
+          data: sponsorAverages,
+          backgroundColor: 'rgba(0, 150, 136, 0.7)',
+          borderColor: 'rgba(0, 150, 136, 1)',
+          borderWidth: 1,
+          borderRadius: 4
         }]
       },
-      options: { plugins:{ legend:{ position:'bottom' } } }
+      options: {
+        responsive: true,
+        indexAxis: 'y',
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: 'Average Hifz Progress per Sponsor', font: { size: 14 } }
+        },
+        scales: {
+          x: { beginAtZero: true, title: { display: true, text: 'Average Progress (%)' } },
+          y: { title: { display: true, text: 'Sponsor' } }
+        }
+      }
     });
   })();
   </script>
