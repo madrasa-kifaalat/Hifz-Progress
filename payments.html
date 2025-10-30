@@ -27,14 +27,18 @@
       <div id="paymentsArea"></div>
     </div>
   </main>
-
 <script src="assets/app.js"></script>
 <script>
 (async function(){
   try {
-    const r = await fetch('payments.json');
-    if(!r.ok) throw new Error('payments.json not found');
+    const r = await fetch('donations.json'); // your JSON file
+    if(!r.ok) throw new Error('donations.json not found');
     const donations = await r.json();
+
+    let html = '';
+
+    // 🌟 Purpose
+    html += `
     <div class="card mb-4 shadow-sm">
       <div class="card-header bg-info text-white">
         <h5 class="mb-0">🌟 Purpose</h5>
@@ -42,68 +46,66 @@
       <div class="card-body">
         <p>Madrasa Kifālat is a charitable initiative to support students and madrasas in need. All donations are collected <strong>purely for the sake of Aakhirah</strong>. There is <strong>no personal promotion</strong> or worldly gain involved.</p>
       </div>
-    </div>
+    </div>`;
 
-    // Build Monthly Donations Table
-    let html = `
-      <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-primary text-white">
-          <h5 class="mb-0">💰 Monthly Donations</h5>
-        </div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-striped table-hover table-sm mb-0">
-              <thead class="table-light">
-                <tr><th>Sponsor</th><th>Amount (₹)</th></tr>
-              </thead>
-              <tbody>
-                ${donations.monthly_donations.map(d=>`
-                  <tr><td>${d.sponsor}</td><td>${d.amount.toLocaleString()}</td></tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Bank Details
+    // 💰 Monthly Donations
     html += `
-      <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-success text-white">
-          <h5 class="mb-0">🏦 Bank Details</h5>
-        </div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>Bank:</strong> ${donations.bank_details.bank_name}</li>
-            <li class="list-group-item"><strong>Account No:</strong> ${donations.bank_details.account_no}</li>
-            <li class="list-group-item"><strong>IFSC:</strong> ${donations.bank_details.ifsc_code}</li>
-            <li class="list-group-item"><strong>UPI:</strong> ${donations.bank_details.upi_id}</li>
-            <li class="list-group-item"><strong>Account Holder:</strong> ${donations.bank_details.account_holder}</li>
-            <li class="list-group-item"><strong>Email:</strong> ${donations.bank_details.email}</li>
-          </ul>
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">💰 Monthly Donations</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead class="table-light">
+              <tr><th>Sponsor</th><th>Amount (₹)</th></tr>
+            </thead>
+            <tbody>
+              ${donations.monthly_donations.map(d=>`
+              <tr><td>${d.sponsor}</td><td>${d.amount.toLocaleString()}</td></tr>
+              `).join('')}
+            </tbody>
+          </table>
         </div>
       </div>
-    `;
+    </div>`;
 
-    // Notes
+    // 🏦 Bank Details
     html += `
-      <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-warning text-dark">
-          <h5 class="mb-0">📝 Important Notes</h5>
-        </div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            ${donations.notes.map(n=>`<li class="list-group-item">${n}</li>`).join('')}
-          </ul>
-        </div>
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">🏦 Bank Details</h5>
       </div>
-    `;
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Bank:</strong> ${donations.bank_details.bank_name}</li>
+          <li class="list-group-item"><strong>Account No:</strong> ${donations.bank_details.account_no}</li>
+          <li class="list-group-item"><strong>IFSC:</strong> ${donations.bank_details.ifsc_code}</li>
+          <li class="list-group-item"><strong>UPI:</strong> ${donations.bank_details.upi_id}</li>
+          <li class="list-group-item"><strong>Account Holder:</strong> ${donations.bank_details.account_holder}</li>
+          <li class="list-group-item"><strong>Email:</strong> ${donations.bank_details.email}</li>
+        </ul>
+      </div>
+    </div>`;
 
+    // 📝 Important Notes
+    html += `
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header bg-warning text-dark">
+        <h5 class="mb-0">📝 Important Notes</h5>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          ${donations.notes.map(n=>`<li class="list-group-item">${n}</li>`).join('')}
+        </ul>
+      </div>
+    </div>`;
+
+    // Insert into page
     document.getElementById('paymentsArea').innerHTML = html;
 
   } catch(e) {
-    document.getElementById('paymentsArea').innerHTML = '<div class="muted">No donation records found. Please add <code>payments.json</code> to the repo.</div>';
+    document.getElementById('paymentsArea').innerHTML = '<div class="muted">No donation records found. Please add <code>donations.json</code> to the repo.</div>';
     console.error(e);
   }
 })();
