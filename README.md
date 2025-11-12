@@ -37,4 +37,5 @@ Even though this work is purely for Aakhirah, you can contribute by:
 
 ## 🌐 Website
 
-Our GitHub Pages site:  https://github.com/madrasa-kifaalat/Hifz-Progress.git
+Our GitHub Pages site:  https://github.com/madrasa-kifaalat/Hifz-Progress
+
